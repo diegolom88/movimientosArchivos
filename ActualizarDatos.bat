@@ -1,0 +1,1 @@
+"C:\Users\Administrador\OneDrive - Desarrollo y Construcciones Urbanas SA de CV\BI\DYCUSA\Scripts\movimientosArchivos\venv\Scripts\activate" && python "C:\Users\Administrador\OneDrive - Desarrollo y Construcciones Urbanas SA de CV\BI\DYCUSA\Scripts\movimientosArchivos\main\app.py"
