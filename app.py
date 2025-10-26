@@ -83,7 +83,7 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
 
         # Read the CSV file with the correct encoding
-        df = pd.read_csv(file, encoding='ISO-8859-1', sep=',', quotechar='"', engine='python')
+        df = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='warn')
         
         # Save the Excel file
         df.to_excel(file.with_suffix('.xlsx'), index=False)
