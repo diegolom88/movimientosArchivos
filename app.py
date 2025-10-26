@@ -11,6 +11,15 @@ def move_files(folder_path, destination_folder):
 
     ##### Move "Otros" csv files to new destination folder and convert them to xlsx
     for file in Path(folder_path).rglob('*.csv'):  # Use rglob to search recursively in subfolders
+
+        with open(file, encoding='ISO-8859-1') as f:
+            for i, line in enumerate(f):
+                if i in range(265, 275):
+                    print(file)
+                    print(i, line)
+
+        exit()
+
         # Read the CSV file with the correct encoding
         df = pd.read_csv(file, encoding='ISO-8859-1')
         
