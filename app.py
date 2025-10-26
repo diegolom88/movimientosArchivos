@@ -12,21 +12,18 @@ def move_files(folder_path, destination_folder):
     # convert csv files to xlsx files
     for file in Path(folder_path).rglob('*.csv'):  # Use rglob to search recursively in subfolders
 
-        # Detect encoding
-        with open(file, 'rb') as f:
-            rawdata = f.read(100000)  # read first 100KB for detection
-            result = chardet.detect(rawdata)
-            encoding = result['encoding']
-            confidence = result['confidence']
+        # # Detect encoding
+        # with open(file, 'rb') as f:
+        #     rawdata = f.read(100000)  # read first 100KB for detection
+        #     result = chardet.detect(rawdata)
+        #     encoding = result['encoding']
+        #     confidence = result['confidence']
+        # print(f"Detected encoding: {encoding} (confidence: {confidence:.2f})")
+        # # end script
+        # exit()
 
-        print(f"Detected encoding: {encoding} (confidence: {confidence:.2f})")
-
-
-        # end script
-        exit()
-
-
-        df = pd.read_csv(file)
+        # Read the CSV file with the correct encoding
+        df = pd.read_csv(file, encoding='ISO-8859-1')
         
         # Get the relative path from the source folder
         relative_path = file.relative_to(folder_path)
