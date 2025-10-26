@@ -74,14 +74,6 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
     ##### Convert pending csv files to xlsx
     for file in Path(destination_folder).rglob('*.csv'):
-        print(file)
-
-        with open(file, encoding='ISO-8859-1') as f:
-            for i, line in enumerate(f):
-                if i in range(265, 275):
-                    print(i, line)
-
-
         # Read the CSV file with the correct encoding
         df = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='warn')
         
