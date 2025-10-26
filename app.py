@@ -75,6 +75,12 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
     ##### Convert pending csv files to xlsx
     for file in Path(destination_folder).rglob('*.csv'):
+        # Skip files in the first level of the folder structure that start with "Scripts"
+        relative_path = file.relative_to(destination_folder)
+        if relative_path.parts[0].startswith("Scripts"):
+            print(f"Skipping file: {file}")
+            continue
+            
         # Read the CSV file with the correct encoding
         df = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='warn')
         
