@@ -77,6 +77,7 @@ def convert_pending_csv_to_xlsx(destination_folder):
     for file in Path(destination_folder).rglob('*.csv'):
         # Skip files in the first level of the folder structure that start with "Scripts"
         relative_path = file.relative_to(destination_folder)
+        print(relative_path)
         if relative_path.parts[0].startswith("Scripts"):
             print(f"Skipping file: {file}")
             continue
