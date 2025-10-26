@@ -4,12 +4,13 @@ import pandas as pd
 import openpyxl # is used by pandas, but it is required as a separate library to set column widths
 from pathlib import Path
 
+
 ##### Functions
 def move_files(folder_path, destination_folder):
     # Initialize variables
     filesMoved = 0
 
-    # convert csv files to xlsx files
+    ##### Move "Otros" csv files to new destination folder and convert them to xlsx
     for file in Path(folder_path).rglob('*.csv'):  # Use rglob to search recursively in subfolders
 
         # # Detect encoding
@@ -79,6 +80,20 @@ def move_files(folder_path, destination_folder):
 
     return filesMoved
 
+def convert_pending_csv_to_xlsx(destination_folder):
+    # Initialize variables
+    filesConverted = 0
+
+    ##### Convert pending csv files to xlsx
+    for file in Path(destination_folder).rglob('*.csv'):
+        # Read the CSV file with the correct encoding
+        df = pd.read_csv(file, encoding='ISO-8859-1')
+        # Save the Excel file
+        df.to_excel(file.with_suffix('.xlsx'), index=False)
+
+        filesConverted += 1
+
+    return filesConverted
 
 
 ##### Main script
@@ -86,9 +101,16 @@ def move_files(folder_path, destination_folder):
 files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
 destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
 
+# Move "Otros" files to new folder
 filesMoved = move_files(files_folder, destination_folder)
-
 if filesMoved > 0:
     print(f"Files moved successfully: {filesMoved}")
 else:
     print("No files where moved")
+
+# Convert pending csv files to xlsx
+extraFilesConverted = convert_pending_csv_to_xlsx(destination_folder)
+if extraFilesConverted > 0:
+    print(f"Extra files converted successfully: {extraFilesConverted}")
+else:
+    print("No extra files where converted")
