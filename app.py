@@ -1,4 +1,5 @@
 import os
+import chardet
 import pandas as pd
 import openpyxl # is used by pandas, but it is required as a separate library to set column widths
 from pathlib import Path
@@ -10,6 +11,21 @@ def move_files(folder_path, destination_folder):
 
     # convert csv files to xlsx files
     for file in Path(folder_path).rglob('*.csv'):  # Use rglob to search recursively in subfolders
+
+        # Detect encoding
+        with open(file, 'rb') as f:
+            rawdata = f.read(100000)  # read first 100KB for detection
+            result = chardet.detect(rawdata)
+            encoding = result['encoding']
+            confidence = result['confidence']
+
+        print(f"Detected encoding: {encoding} (confidence: {confidence:.2f})")
+
+
+        # end script
+        exit()
+
+
         df = pd.read_csv(file)
         
         # Get the relative path from the source folder
