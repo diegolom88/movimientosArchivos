@@ -5,7 +5,7 @@ from pathlib import Path
 
 ##### Functions
 def move_files(folder_path, destination_folder):
-    # initialize variables
+    # Initialize variables
     filesMoved = 0
 
     # convert csv files to xlsx files
@@ -15,11 +15,11 @@ def move_files(folder_path, destination_folder):
         # Get the relative path from the source folder
         relative_path = file.relative_to(folder_path)
 
-        # get first part of the relative path
+        # Get first part of the relative path
         first_part_relative_path = relative_path.parts[0]
 
         if first_part_relative_path == "Compensaciones":
-            # add "Facturacion y Cobranza" at the start of the relative path
+            # Add "Facturacion y Cobranza" at the start of the relative path
             relative_path = Path("Facturacion y Cobranza") / relative_path
 
         # Create the destination path preserving the subfolder structure
@@ -27,6 +27,34 @@ def move_files(folder_path, destination_folder):
         
         # Create the destination directory if it doesn't exist
         dest_file_path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Check if the name of the file start with a value from this list to see if there are changes that need to be made. This is the list: ["FacturasPER", "FacturasPAN"] 
+        if file.name.startswith("FacturasPAN"):
+            # Change the values in the column "Mon" to "USD"
+            df["Mon"] = "USD"
+        elif file.name.startswith("FacturasPER"):
+            # Change the values in the column "Mon" to "SOL"
+            df["Mon"] = "SOL"
+        elif file.name.startswith("CobranzaPAN"):
+            # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "USD"
+            df["FDE_MONEDA"] = "USD"
+            df["FAC_MONEDA"] = "USD"
+        elif file.name.startswith("CobranzaPER"):
+            # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "SOL"
+            df["FDE_MONEDA"] = "SOL"
+            df["FAC_MONEDA"] = "SOL"
+        elif file.name.startswith("CompensacionesPAN"):
+            # Change the values in the column "Moneda" to "USD"
+            df["Moneda"] = "USD"
+        elif file.name.startswith("CompensacionesPER"):
+            # Change the values in the column "Moneda" to "SOL"
+            df["Moneda"] = "SOL"
+        elif file.name.startswith("NotasCrePAN"):
+            # Change the values in the column "NCRE_MONEDA" to "USD"
+            df["NCRE_MONEDA"] = "USD"
+        elif file.name.startswith("NotasCrePER"):
+            # Change the values in the column "NCRE_MONEDA" to "SOL"
+            df["NCRE_MONEDA"] = "SOL"
         
         # Save the Excel file
         df.to_excel(dest_file_path, index=False)
@@ -41,7 +69,7 @@ def move_files(folder_path, destination_folder):
 
 
 ##### Main script
-# initialize variables
+# Initialize variables
 files_folder = "C:/Users/pc/Desktop/ba-files/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros
 destination_folder = "C:/Users/pc/Desktop/ba-files/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA
 
@@ -51,39 +79,3 @@ if filesMoved > 0:
     print(f"Files moved successfully: {filesMoved}")
 else:
     print("No files where moved")
-
-
-
-
-# combined_df = combine_excel_files(folder_path)
-# result = add_maquinaria_categorization(combined_df)
-
-# # Create output folder if it doesn't exist
-# os.makedirs(output_folder, exist_ok=True)
-
-# # Save combined data to a new Excel file in the specified output folder
-# output_path = os.path.join(output_folder, "MayorAcumDYCUSA.xlsx")
-# print("SAVING COMBINED DATA TO EXCEL")
-# result.to_excel(output_path, index=False, sheet_name="MayorAcumDYCUSA", engine="openpyxl")
-
-# # Auto-adjust column widths
-# from openpyxl import load_workbook
-# wb = load_workbook(output_path)
-# ws = wb["MayorAcumDYCUSA"]
-
-# # Auto-adjust column widths based on content
-# for column in ws.columns:
-#     max_length = 0
-#     column_letter = column[0].column_letter
-#     for cell in column:
-#         try:
-#             if len(str(cell.value)) > max_length:
-#                 max_length = len(str(cell.value))
-#         except:
-#             pass
-#     adjusted_width = min(max_length + 2, 50)  # Cap at 50 characters
-#     ws.column_dimensions[column_letter].width = adjusted_width
-# wb.save(output_path)
-# wb.close()
-# print("FINISHED SAVING COMBINED DATA TO EXCEL")
-# print(f"Files combined successfully! Saved to: {output_path}")
