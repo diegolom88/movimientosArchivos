@@ -9,7 +9,7 @@ from datetime import datetime
 def update_exchange_rate_file(date_column, currency_column, file_df):
     # Initialize variables
     added_combinations = 0
-    exchange_rate_file_path = "C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx"  # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx     # C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx
+    exchange_rate_file_path = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx"  # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx     # C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx
     
     # Open the Excel file
     currency_exchange_rate_df = pd.read_excel(exchange_rate_file_path)
@@ -153,9 +153,9 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
 ##### Main script
 # Initialize variables
-files_folder = "C:/Users/pc/Desktop/ba-files/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
-destination_folder = "C:/Users/pc/Desktop/ba-files/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
-logs_folder = "C:/Users/pc/Desktop/ba-files/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
+files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
+destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
+logs_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
 
 # Create log file with current date in YYMMDD format
 log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d')}.txt"
