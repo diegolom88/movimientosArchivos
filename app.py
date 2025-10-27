@@ -72,8 +72,8 @@ def move_files(folder_path, destination_folder):
 
         # Check if the name of the file start with a value from this list to see if there are changes that need to be made. This is the list: ["FacturasPER", "FacturasPAN"] 
         if file.name.startswith("FacturasPAN"):
-            # Change the values in the column "Mon" to "USD"
-            df["Mon"] = "USD"
+            # Change the values in the column "Mon" to "DLS"
+            df["Mon"] = "DLS"
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Mon", file_df=df[["Fecha", "Mon"]])
         elif file.name.startswith("FacturasPER"):
@@ -82,9 +82,9 @@ def move_files(folder_path, destination_folder):
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Mon", file_df=df[["Fecha", "Mon"]])
         elif file.name.startswith("CobranzaPAN"):
-            # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "USD"
-            df["FDE_MONEDA"] = "USD"
-            df["FAC_MONEDA"] = "USD"
+            # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "DLS"
+            df["FDE_MONEDA"] = "DLS"
+            df["FAC_MONEDA"] = "DLS"
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="FDE_FECHA", currency_column="FDE_MONEDA", file_df=df[["FDE_FECHA", "FDE_MONEDA"]])
         elif file.name.startswith("CobranzaPER"):
@@ -94,8 +94,8 @@ def move_files(folder_path, destination_folder):
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="FDE_FECHA", currency_column="FDE_MONEDA", file_df=df[["FDE_FECHA", "FDE_MONEDA"]])
         elif file.name.startswith("CompensacionesPAN"):
-            # Change the values in the column "Moneda" to "USD"
-            df["Moneda"] = "USD"
+            # Change the values in the column "Moneda" to "DLS"
+            df["Moneda"] = "DLS"
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Moneda", file_df=df[["Fecha", "Moneda"]])
         elif file.name.startswith("CompensacionesPER"):
@@ -104,8 +104,8 @@ def move_files(folder_path, destination_folder):
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Moneda", file_df=df[["Fecha", "Moneda"]])
         elif file.name.startswith("NotasCrePAN"):
-            # Change the values in the column "NCRE_MONEDA" to "USD"
-            df["NCRE_MONEDA"] = "USD"
+            # Change the values in the column "NCRE_MONEDA" to "DLS"
+            df["NCRE_MONEDA"] = "DLS"
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="NCRE_FECHA", currency_column="NCRE_MONEDA", file_df=df[["NCRE_FECHA", "NCRE_MONEDA"]])
         elif file.name.startswith("NotasCrePER"):
