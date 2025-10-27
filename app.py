@@ -64,32 +64,53 @@ def move_files(folder_path, destination_folder):
         if file.name.startswith("FacturasPAN"):
             # Change the values in the column "Mon" to "USD"
             df["Mon"] = "USD"
-            # Open the exchange rate file
+            # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Mon", file_df=df[["Fecha", "Mon"]])
             print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("FacturasPER"):
             # Change the values in the column "Mon" to "SOL"
             df["Mon"] = "SOL"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Mon", file_df=df[["Fecha", "Mon"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("CobranzaPAN"):
             # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "USD"
             df["FDE_MONEDA"] = "USD"
             df["FAC_MONEDA"] = "USD"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="FDE_FECHA", currency_column="FDE_MONEDA", file_df=df[["FDE_FECHA", "FDE_MONEDA"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("CobranzaPER"):
             # Change the values in the column "FDE_MONEDA" and "FAC_MONEDA" to "SOL"
             df["FDE_MONEDA"] = "SOL"
             df["FAC_MONEDA"] = "SOL"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="FDE_FECHA", currency_column="FDE_MONEDA", file_df=df[["FDE_FECHA", "FDE_MONEDA"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("CompensacionesPAN"):
             # Change the values in the column "Moneda" to "USD"
             df["Moneda"] = "USD"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Moneda", file_df=df[["Fecha", "Moneda"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("CompensacionesPER"):
             # Change the values in the column "Moneda" to "SOL"
             df["Moneda"] = "SOL"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Moneda", file_df=df[["Fecha", "Moneda"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("NotasCrePAN"):
             # Change the values in the column "NCRE_MONEDA" to "USD"
             df["NCRE_MONEDA"] = "USD"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="NCRE_FECHA", currency_column="NCRE_MONEDA", file_df=df[["NCRE_FECHA", "NCRE_MONEDA"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("NotasCrePER"):
             # Change the values in the column "NCRE_MONEDA" to "SOL"
             df["NCRE_MONEDA"] = "SOL"
+            # Add missing combinations to the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="NCRE_FECHA", currency_column="NCRE_MONEDA", file_df=df[["NCRE_FECHA", "NCRE_MONEDA"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         
         # Save the Excel file
         df.to_excel(dest_file_path, index=False)
