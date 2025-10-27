@@ -6,6 +6,35 @@ from datetime import datetime
 
 
 ##### Functions
+def update_exchange_rate_file(date_column, currency_column, file_df):
+    # Initialize variables
+    added_combinations = 0
+    exchange_rate_file_path = "C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx"  # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx     # C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx
+    
+    # Open the Excel file
+    currency_exchange_rate_df = pd.read_excel(exchange_rate_file_path)
+
+    # Change name of the date_column to "Fecha" and the currency_column to "Moneda"
+    file_df.rename(columns={date_column: "Fecha", currency_column: "Moneda"}, inplace=True)
+
+    # Check which combinations per row is missing in the currency_exchange_rate_df
+    missing_combinations = file_df[~file_df.isin(currency_exchange_rate_df[["Fecha", "Moneda"]])].dropna()
+    
+    # remove duplicates from missing_combinations
+    missing_combinations = missing_combinations.drop_duplicates()
+    
+    # If there are missing combinations, add them to the currency_exchange_rate_df
+    if not missing_combinations.empty:
+        # Add the missing combinations to the currency_exchange_rate_df
+        currency_exchange_rate_df = pd.concat([currency_exchange_rate_df, missing_combinations])
+        # Save the currency exchange rate dataframe to the excel file
+        currency_exchange_rate_df.to_excel(exchange_rate_file_path, index=False)
+        # Update the number of added combinations
+        added_combinations = len(missing_combinations)
+
+    # Return the number of added combinations
+    return added_combinations
+
 def move_files(folder_path, destination_folder):
     # Initialize variables
     filesMoved = 0
@@ -35,6 +64,9 @@ def move_files(folder_path, destination_folder):
         if file.name.startswith("FacturasPAN"):
             # Change the values in the column "Mon" to "USD"
             df["Mon"] = "USD"
+            # Open the exchange rate file
+            added_combinations = update_exchange_rate_file(date_column="Fecha", currency_column="Mon", file_df=df[["Fecha", "Mon"]])
+            print(f"Added {added_combinations} combinations to the exchange rate file")
         elif file.name.startswith("FacturasPER"):
             # Change the values in the column "Mon" to "SOL"
             df["Mon"] = "SOL"
@@ -98,9 +130,9 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
 ##### Main script
 # Initialize variables
-files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
-destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
-logs_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Scripts/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
+files_folder = "C:/Users/pc/Desktop/ba-files/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
+destination_folder = "C:/Users/pc/Desktop/ba-files/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
+logs_folder = "C:/Users/pc/Desktop/ba-files/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
 
 # Create log file with current date in YYMMDD format
 log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d')}.txt"
@@ -108,7 +140,6 @@ log_path = Path(logs_folder) / log_filename
 
 # Create logs directory if it doesn't exist
 log_path.parent.mkdir(parents=True, exist_ok=True)
-
 
 # Move "Otros" files to new folder
 filesMoved = move_files(files_folder, destination_folder)
