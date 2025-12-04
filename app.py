@@ -10,12 +10,16 @@ def update_exchange_rate_file(date_column, currency_column, file_df):
     # Initialize variables
     added_combinations = 0
     exchange_rate_file_path = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx"  # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx     # C:/Users/pc/Desktop/ba-files/DYCUSA/Datos/TiposDeCambioOtrasExtensiones.xlsx
-    
+
     # Open the Excel file
     currency_exchange_rate_df = pd.read_excel(exchange_rate_file_path)
 
     # Change name of the date_column to "Fecha" and the currency_column to "Moneda"
     file_df = file_df.rename(columns={date_column: "Fecha", currency_column: "Moneda"})
+
+    # Convert 'Fecha' to datetime in both DataFrames to ensure type compatibility
+    file_df["Fecha"] = pd.to_datetime(file_df["Fecha"])
+    currency_exchange_rate_df["Fecha"] = pd.to_datetime(currency_exchange_rate_df["Fecha"])
 
     # Identify missing (Fecha, Moneda) combinations
     merged = file_df.merge(
@@ -53,7 +57,7 @@ def move_files(folder_path, destination_folder):
     for file in Path(folder_path).rglob('*.csv'):  # Use rglob to search recursively in subfolders
         # Read the CSV file with the correct encoding
         df = pd.read_csv(file, encoding='ISO-8859-1')
-        
+
         # Get the relative path from the source folder
         relative_path = file.relative_to(folder_path)
 
@@ -66,11 +70,11 @@ def move_files(folder_path, destination_folder):
 
         # Create the destination path preserving the subfolder structure
         dest_file_path = Path(destination_folder) / relative_path.with_suffix('.xlsx')
-        
+
         # Create the destination directory if it doesn't exist
         dest_file_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Check if the name of the file start with a value from this list to see if there are changes that need to be made. This is the list: ["FacturasPER", "FacturasPAN"] 
+        # Check if the name of the file start with a value from this list to see if there are changes that need to be made. This is the list: ["FacturasPER", "FacturasPAN"]
         if file.name.startswith("FacturasPAN"):
             # Change the values in the column "Mon" to "DLS"
             df["Mon"] = "DLS"
@@ -113,10 +117,10 @@ def move_files(folder_path, destination_folder):
             df["NCRE_MONEDA"] = "SOL"
             # Add missing combinations to the exchange rate file
             added_combinations = update_exchange_rate_file(date_column="NCRE_FECHA", currency_column="NCRE_MONEDA", file_df=df[["NCRE_FECHA", "NCRE_MONEDA"]])
-        
+
         # Save the Excel file
         df.to_excel(dest_file_path, index=False)
-        
+
         # Remove the original CSV file
         file.unlink()  # Delete the original CSV file
 
@@ -136,10 +140,10 @@ def convert_pending_csv_to_xlsx(destination_folder):
         if relative_path.parts[0].startswith("Scripts"):
             print(f"Skipping file: {file}")
             continue
-            
+
         # Read the CSV file with the correct encoding
         df = pd.read_csv(file, encoding='ISO-8859-1', on_bad_lines='warn')
-        
+
         # Save the Excel file
         df.to_excel(file.with_suffix('.xlsx'), index=False)
 
