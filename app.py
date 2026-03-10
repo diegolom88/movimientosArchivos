@@ -163,10 +163,10 @@ if __name__ == "__main__":
         # Initialize variables
         files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
         destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
-        logs_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
+        logs_folder = "C:/Users/Administrador/ScriptsBI/Logs"
 
         # Create log file with current date in YYMMDD format
-        log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d')}.txt"
+        log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d_%H%M%S')}.txt"
         log_path = Path(logs_folder) / log_filename
 
         # Create logs directory if it doesn't exist
@@ -196,9 +196,16 @@ if __name__ == "__main__":
                 log_file.write(message)
                 print(message)
 
-    except Exception as e:
-        print("\n--- ERROR ---", file=sys.stderr)
-        traceback.print_exc(file=sys.stderr)
-        print("\n--- ERROR ---", file=sys.stderr)
+        with open(log_path, 'a') as log_file:
+            message = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Script completed successfully\n"
+            log_file.write(message)
+            print(message)
 
-    input("\nPress Enter to exit...")
+    except Exception as e:
+        error_message = f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] ERROR: {e}\n{traceback.format_exc()}\n"
+        print(error_message, file=sys.stderr)
+        try:
+            with open(log_path, 'a') as log_file:
+                log_file.write(error_message)
+        except Exception:
+            pass
