@@ -1,4 +1,6 @@
 import os
+import sys
+import traceback
 import pandas as pd
 import openpyxl # is used by pandas, but it is required as a separate library to set column widths
 from pathlib import Path
@@ -156,38 +158,47 @@ def convert_pending_csv_to_xlsx(destination_folder):
 
 
 ##### Main script
-# Initialize variables
-files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
-destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
-logs_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
+if __name__ == "__main__":
+    try:
+        # Initialize variables
+        files_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Otros     # C:/Users/pc/Desktop/ba-files/Otros
+        destination_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/DYCUSA     # C:/Users/pc/Desktop/ba-files/DYCUSA
+        logs_folder = "C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs" # C:/Users/Administrador/OneDrive - Desarrollo y Construcciones Urbanas SA de CV/BI/Logs     # C:/Users/pc/Desktop/ba-files/Logs
 
-# Create log file with current date in YYMMDD format
-log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d')}.txt"
-log_path = Path(logs_folder) / log_filename
+        # Create log file with current date in YYMMDD format
+        log_filename = f"movimientosArchivos{datetime.now().strftime('%y%m%d')}.txt"
+        log_path = Path(logs_folder) / log_filename
 
-# Create logs directory if it doesn't exist
-log_path.parent.mkdir(parents=True, exist_ok=True)
+        # Create logs directory if it doesn't exist
+        log_path.parent.mkdir(parents=True, exist_ok=True)
 
-# Move "Otros" files to new folder
-filesMoved = move_files(files_folder, destination_folder)
-with open(log_path, 'a') as log_file:
-    if filesMoved > 0:
-        message = f"Files moved successfully: {filesMoved}\n"
-        log_file.write(message)
-        print(message)
-    else:
-        message = "No files where moved\n"
-        log_file.write(message)
-        print(message)
+        # Move "Otros" files to new folder
+        filesMoved = move_files(files_folder, destination_folder)
+        with open(log_path, 'a') as log_file:
+            if filesMoved > 0:
+                message = f"Files moved successfully: {filesMoved}\n"
+                log_file.write(message)
+                print(message)
+            else:
+                message = "No files where moved\n"
+                log_file.write(message)
+                print(message)
 
-# Convert pending csv files to xlsx
-extraFilesConverted = convert_pending_csv_to_xlsx(destination_folder)
-with open(log_path, 'a') as log_file:
-    if extraFilesConverted > 0:
-        message = f"Extra files converted successfully: {extraFilesConverted}\n"
-        log_file.write(message)
-        print(message)
-    else:
-        message = "No extra files where converted\n"
-        log_file.write(message)
-        print(message)
+        # Convert pending csv files to xlsx
+        extraFilesConverted = convert_pending_csv_to_xlsx(destination_folder)
+        with open(log_path, 'a') as log_file:
+            if extraFilesConverted > 0:
+                message = f"Extra files converted successfully: {extraFilesConverted}\n"
+                log_file.write(message)
+                print(message)
+            else:
+                message = "No extra files where converted\n"
+                log_file.write(message)
+                print(message)
+
+    except Exception as e:
+        print("\n--- ERROR ---", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
+        print("\n--- ERROR ---", file=sys.stderr)
+
+    input("\nPress Enter to exit...")
